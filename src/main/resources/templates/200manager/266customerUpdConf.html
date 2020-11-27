@@ -8,10 +8,10 @@
 <body>
 <div class="box">
 <h3>顧客変更確認</h3>
- 	<p th:text="${msg}"></p>
- 	<form role="form" id="customerRegExe" th:action="@{/Mgr/customerRegExe}" th:object="${customerForm}" method="post">
- 	<input type="hidden" name="customerCode" th:value="*{customerCode}">
- 	<input type="hidden" name="customerName" th:value="*{customerName}">
+ 	<span th:text="${errormessage}" th:class="error"></span>
+ 	<form th:action="@{/Mgr/customerRegExe}" th:object="${customerForm}" method="post">
+ 		<input type="hidden" name="customerCode" th:value="*{customerCode}">
+ 		<input type="hidden" name="customerName" th:value="*{customerName}">
 	 	<table>
 	 		<tr>
 	 			<th>顧客コード</th>

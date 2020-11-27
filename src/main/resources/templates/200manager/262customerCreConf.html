@@ -7,22 +7,21 @@
 <body>
 <div class="box">
 <h3>顧客新規登録</h3>
- 	<span th:text="${msg}"></span>
- 	<form role="form" id="customerRegExe" th:action="@{/Mgr/customerRegExe}" th:object="${customerForm}" method="post">
- 	<input type="hidden" name="customerCode" th:field="${customerForm.customerCode}">
- 	<input type="hidden" name="customerName" th:field="${customerForm.customerName}">
- 	<table>
- 		<tr>
- 			<th>顧客コード</th>
-			<td class="left" th:text="*{customerCode}">
-			</td>
- 		</tr>
- 		<tr>
- 			<th>顧客名</th>
- 			<td class="left" th:text="*{customerName}"/>
- 		</tr>
- 	</table>
- 	<button type="submit" class="menuBtn">登録実行</button>
+ 	<span th:text="${errormessage}" th:class="error"></span>
+ 	<form th:action="@{/Mgr/customerRegExe}" th:object="${customerForm}" method="post">
+ 		<input type="hidden" name="customerCode" th:field="*{customerCode}">
+ 		<input type="hidden" name="customerName" th:field="*{customerName}">
+ 		<table>
+ 			<tr>
+ 				<th>顧客コード</th>
+				<td class="left" th:text="*{customerCode}" />
+ 			</tr>
+ 			<tr>
+ 				<th>顧客名</th>
+ 				<td class="left" th:text="*{customerName}" />
+ 			</tr>
+ 		</table>
+ 		<button type="submit" class="menuBtn">登録実行</button>
  	</form>
 </div>
 </body>

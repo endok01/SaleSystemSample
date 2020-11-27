@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.pci.entity.MtCustomer;
 import com.pci.entity.MtItem;
 import com.pci.entity.MtItemGenre;
+import com.pci.form.ItemGenreForm;
 import com.pci.form.CustomerForm;
 import com.pci.repository.CustomerRepository;
 import com.pci.repository.ItemGenreRepository;
@@ -291,11 +292,9 @@ public class mgrController {
 			@ModelAttribute CustomerForm customerForm,
 			ModelAndView mv) {
 
-		// Debug
-		System.out.println(customerForm);
 		// 顧客情報登録
-		MtCustomer m = new MtCustomer(customerForm.getCustomerCode(), customerForm.getCustomerName());
-		customerRepository.saveAndFlush(m);
+		MtCustomer c = new MtCustomer(customerForm.getCustomerCode(), customerForm.getCustomerName());
+		customerRepository.saveAndFlush(c);
 		
 		// 顧客リストへリダイレクト
 		mv.setViewName("redirect:/Mgr/CustomerList");		
@@ -304,7 +303,6 @@ public class mgrController {
 
 	}
 
-	
 	/**
 	 * 
 	 * 顧客情報更新メソッド
@@ -337,7 +335,7 @@ public class mgrController {
 
 	/**
 	 * 
-	 * 顧客情報登録確認メソッド
+	 * 顧客情報変更確認メソッド
 	 * @param customerForm
 	 * @param result
 	 * @param mv
@@ -382,28 +380,28 @@ public class mgrController {
 		return mv;
 	}
 
-//	/**
-//	 * 
-//	 * 商品登録メソッド
-//	 * 商品登録ボタンクリック時に呼び出される
-//	 * @param itemForm
-//	 * @param mv
-//	 * @return ModelAndView
-//	 */
-//	@RequestMapping(value = "/ItemAdd", method = RequestMethod.POST)
-//	@Transactional(readOnly = true)
-//	public ModelAndView itemAdd(
+	/**
+	 * 
+	 * 商品登録メソッド
+	 * 商品登録ボタンクリック時に呼び出される
+	 * @param itemForm
+	 * @param mv
+	 * @return ModelAndView
+	 */
+	@RequestMapping(value = "/ItemAdd", method = RequestMethod.POST)
+	@Transactional(readOnly = true)
+	public ModelAndView itemAdd(
 //			@ModelAttribute ItemForm itemForm,
-//			ModelAndView mv) {
-//		
-//
+			ModelAndView mv) {
+		
+
 //		List<MtCategory>categoryList = categoryRepo.findAllByOrderByCategoryCode();
 //		mv.addObject("categoryList", categoryList);
 //		
 //		mv.setViewName("100mgr/133ItemAdd");
-//		return mv;
-//
-//	}
+		return mv;
+
+	}
 
 
 //	/**
@@ -593,170 +591,139 @@ public class mgrController {
 		return mv;
 	}
 
-//	/**
-//	 * 
-//	 * 商品区分削除確認メソッド
-//	 * 削除リンククリック時に呼び出される
-//	 * @param categoryCode
-//	 * @param categoryForm
-//	 * @param mv
-//	 * @return ModelAndView
-//	 */
-//	@RequestMapping(value = "/categoryDel/{categoryCode}", method = RequestMethod.GET)
-//	@Transactional(readOnly = true)
-//	public ModelAndView categoryDel(
-//			@PathVariable String categoryCode,	// 区分コード
-//			@ModelAttribute CategoryForm categoryForm,
-//			ModelAndView mv) {
-//
-//		// 削除対象の商品区分エンティティ取得
-//		MtCategory c = categoryRepo.getOne(categoryCode);
-//
-//		// フォームビーンへ設定
-//		categoryForm.setCategoryCode(c.getCategoryCode());
-//		categoryForm.setName(c.getName());
-//		
-//		// 削除確認画面の表示を行う
-//		mv.setViewName("100mgr/141CategoryDelconf");
-//		
-//		return mv;
-//	}
-//
-//	/**
-//	 * 
-//	 * 商品区分削除実行メソッド
-//	 * @param categoryCode
-//	 * @param mv
-//	 * @return ModelAndView
-//	 */
-//	@RequestMapping(value = "/categoryDelExe", method = RequestMethod.POST)
-//	@Transactional
-//	public ModelAndView categoryDelExe(
-//			@RequestParam String categoryCode,
-//			ModelAndView mv) {
-//
-//		// 顧客情報削除
-//		// ☆子レコードありで削除できない場合の例外キャッチが必要
-//		categoryRepo.deleteById(categoryCode);
-//		
-//		// 商品区分一覧へリダイレクト
-//		mv.setViewName("redirect:/Mgr/Category");
-//		
-//		return mv;
-//
-//	}
-//	
-//	/**
-//	 * 
-//	 * 商品区分更新メソッド
-//	 * 変更リンククリック時に呼び出される
-//	 * @param categoryCode	商品区分コード
-//	 * @param categoryForm	フォームビーン
-//	 * @param mv ModelAndView
-//	 * @return ModelAndView
-//	 */
-//	@RequestMapping(value = "/categoryUpd/{categoryCode}", method = RequestMethod.GET)
-//	@Transactional(readOnly = true)
-//	public ModelAndView categoryUpdate(
-//			@PathVariable String categoryCode,	// カテゴリーID
-//			@ModelAttribute CategoryForm categoryForm,
-//			ModelAndView mv) {
-//		
-//		// 変更対象の商品区分エンティティを取得する
-//		MtCategory c = categoryRepo.getOne(categoryCode);
-//
-//		// エンティティの情報をフォームビーンに設定する
-//		categoryForm.setCategoryCode(c.getCategoryCode());
-//		categoryForm.setName(c.getName());
-//		
-//		// 商品区分変更画面の表示を行う
-//		mv.setViewName("100mgr/142CategoryUpdate");
-//		
-//		return mv;
-//
-//	}
-//
-//	/**
-//	 * 
-//	 * 商品区分更新実行メソッド
-//	 * @param categoryForm フォームビーン
-//	 * @param result
-//	 * @param mv
-//	 * @return ModelAndView
-//	 */
-//	@RequestMapping(value = "/categoryUpdExe", method = RequestMethod.POST)
-//	@Transactional(readOnly=false)
-//	public ModelAndView categoryUpdExe(
-//			@ModelAttribute @Validated CategoryForm categoryForm,
-//			BindingResult result,
-//			ModelAndView mv) {
-//
-//		// 商品区分情報更新
-//		if(result.hasErrors()) {
-//			mv.setViewName("100mgr/142CategoryUpdate");
-//		} else {
-//			MtCategory c = new MtCategory(categoryForm.getCategoryCode(), categoryForm.getName());
-//			categoryRepo.saveAndFlush(c);
-//			mv.setViewName("redirect:/Mgr/Category");		
-//		}
-//		
-//		return mv;
-//
-//	}
-//
-//	/**
-//	 * 商品区分情報登録メソッド
-//	 * 商品区分登録ボタンクリック時に呼び出される
-//	 * @param categoryForm フォームビーン
-//	 * @param mv
-//	 * @return
-//	 */
-//	@RequestMapping(value = "/CategoryAdd", method = RequestMethod.POST)
-//	@Transactional(readOnly = true)
-//	public ModelAndView categoryAdd(
-//			@ModelAttribute CategoryForm categoryForm,
-//			ModelAndView mv) {
-//		
-//		// Form初期化
-//		categoryForm.setCategoryCode(null);;
-//		categoryForm.setName(null);
-//		
-//		// 区分追加画面の表示を行う
-//		mv.setViewName("100mgr/143CategoryAdd");
-//
-//		return mv;
-//
-//	}
-//
-//	/**
-//	 * 商品区分登録実行メソッド
-//	 * @param categoryForm
-//	 * @param result
-//	 * @param mv
-//	 * @return ModelAndView
-//	 */
-//	@RequestMapping(value = "/categoryAddExe", method = RequestMethod.POST)
-//	@Transactional
-//	public ModelAndView categoryAddConf(
-//			@ModelAttribute @Validated CategoryForm categoryForm,
-//			BindingResult result,
-//			ModelAndView mv) {
-//
-//		if(result.hasErrors()) {
-//			mv.setViewName("100mgr/143CategoryAdd");
-//		} else {
-//			if(!categoryRepo.existsById(categoryForm.getCategoryCode())) {	// 区分コードが重複していないかチェックする
-//				MtCategory c = new MtCategory(categoryForm.getCategoryCode(), categoryForm.getName());
-//				categoryRepo.saveAndFlush(c);
-//				mv.setViewName("redirect:/Mgr/Category");		
-//			}else {
-//				mv.addObject("errormessage","IDが重複しています");
-//				mv.setViewName("100mgr/143CategoryAdd");
-//			}
-//		}
-//		
-//		return mv;
-//
-//	}
-//
+	/**
+	 * 商品区分情報登録メソッド
+	 * 商品区分登録ボタンクリック時に呼び出される
+	 * @param itemGenreForm フォームビーン
+	 * @param mv
+	 * @return
+	 */
+	@RequestMapping(value = "/itemGenreCre", method = RequestMethod.POST)
+	@Transactional(readOnly = true)
+	public ModelAndView itemGenreCre(
+			@ModelAttribute ItemGenreForm itemGenreForm,
+			ModelAndView mv) {
+		
+		// Form初期化
+		itemGenreForm.setItemGenreCode(null);;
+		itemGenreForm.setItemGenreName(null);
+		
+		// 商品区分追加画面の表示を行う
+		mv.setViewName("200manager/241itemGenreCre");
+
+		return mv;
+
+	}
+
+	/**
+	 * 
+	 * 商品区分情報登録確認メソッド
+	 * @param itemGenreForm
+	 * @param result
+	 * @param mv
+	 * @return ModelAndView
+	 */
+	@RequestMapping(value = "/itemGenreCreConf", method = RequestMethod.POST)
+	@Transactional(readOnly = true)
+	public ModelAndView itemGenreCreConf(
+			@ModelAttribute @Validated ItemGenreForm itemGenreForm,
+			BindingResult result,
+			ModelAndView mv) {
+
+		if(result.hasErrors()) {	// Validationエラー
+			mv.setViewName("200manager/241itemGenreCre");
+		} else {
+			// 顧客コードが重複していないかチェックする
+			if(!itemGenreRepository.existsById(itemGenreForm.getItemGenreCode())) {	
+				mv.setViewName("200manager/242itemGenreCreConf");		
+			}else {
+				mv.addObject("errormessage","IDが重複しています");
+				mv.setViewName("200manager/241itemGenreCre");
+			} 
+		}
+		
+		return mv;
+
+	}
+
+	/**
+	 * 
+	 * 商品区分更新メソッド
+	 * 変更リンククリック時に呼び出される
+	 * @param itemGenreCode	商品区分コード
+	 * @param itemGenreForm	フォームビーン
+	 * @param mv ModelAndView
+	 * @return ModelAndView
+	 */
+	@RequestMapping(value = "/itemGenreUpd/{itemGenreCode}", method = RequestMethod.POST)
+	@Transactional(readOnly = true)
+	public ModelAndView categoryUpdate(
+			@PathVariable String itemGenreCode,	// カテゴリーID
+			@ModelAttribute ItemGenreForm itemGenreForm,
+			ModelAndView mv) {
+		
+		// 変更対象の商品区分エンティティを取得する
+		MtItemGenre i = itemGenreRepository.getOne(itemGenreCode);
+
+		// エンティティの情報をフォームビーンに設定する
+		itemGenreForm.setItemGenreCode(i.getItemGenreCode());
+		itemGenreForm.setItemGenreName(i.getItemGenreName());
+		
+		// 商品区分変更画面の表示を行う
+		mv.setViewName("200manager/245itemGenreUpd");
+		
+		return mv;
+
+	}
+
+	/**
+	 * 
+	 * 商品区分情報変更確認メソッド
+	 * @param itemGenreForm
+	 * @param result
+	 * @param mv
+	 * @return ModelAndView
+	 */
+	@RequestMapping(value = "/itemGenreUpdConf", method = RequestMethod.POST)
+	@Transactional(readOnly = true)
+	public ModelAndView itemGenreUpdConf(
+			@ModelAttribute @Validated ItemGenreForm itemGenreForm,
+			BindingResult result,
+			ModelAndView mv) {
+
+		if(result.hasErrors()) {
+			// Validationエラー
+			mv.setViewName("200manager/245itemGenreUpd");
+		} else {
+			mv.setViewName("200manager/246itemGenreUpdConf");		
+		}
+		
+		return mv;
+
+	}
+
+	/**
+	 * 
+	 * 商品区分情報登録・更新実行メソッド
+	 * @param customerForm
+	 * @param mv
+	 * @return ModelAndView
+	 */
+	@RequestMapping(value = "/itemGenreRegExe", method = RequestMethod.POST)
+	@Transactional
+	public ModelAndView itemGenreRegExe(
+			@ModelAttribute ItemGenreForm itemGenreForm,
+			ModelAndView mv) {
+
+		// 商品区分情報登録
+		MtItemGenre i = new MtItemGenre(itemGenreForm.getItemGenreCode(), itemGenreForm.getItemGenreName());
+		itemGenreRepository.saveAndFlush(i);
+		
+		// 商品区分リストへリダイレクト
+		mv.setViewName("redirect:/Mgr/ItemGenreList");		
+		
+		return mv;
+
+	}
+
 }

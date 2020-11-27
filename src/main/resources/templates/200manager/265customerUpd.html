@@ -7,9 +7,9 @@
 <body>
 <div class="box">
 <h3>顧客変更</h3>
- 	<p th:text="${msg}"></p>
- 	<form role="form" id="customerUpdConf" th:action="@{/Mgr/customerUpdConf}" th:object="${customerForm}" method="post">
-	<input type="hidden" name="customerCode" th:value="*{customerCode}"/>
+ 	<span th:text="${errormessage}" th:class="error"></span>
+ 	<form th:action="@{/Mgr/customerUpdConf}" th:object="${customerForm}" method="post">
+		<input type="hidden" name="customerCode" th:value="*{customerCode}"/>
 	 	<table>
 	 		<tr>
 	 			<th>顧客コード</th>

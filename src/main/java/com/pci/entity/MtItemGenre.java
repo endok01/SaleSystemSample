@@ -26,8 +26,16 @@ public class MtItemGenre implements Serializable {
 	@OneToMany(mappedBy="mtItemGenre")
 	private List<MtItem> mtItems;
 
+	// コンストラクタ
 	public MtItemGenre() {
+		super();
 	}
+	public MtItemGenre(String itemGenreCode, String itemGenreName) {
+		super();
+		this.itemGenreCode = itemGenreCode;
+		this.itemGenreName = itemGenreName;
+	}
+
 
 	public String getItemGenreCode() {
 		return this.itemGenreCode;
