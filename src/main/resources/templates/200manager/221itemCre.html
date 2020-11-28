@@ -7,18 +7,24 @@
 <body>
 <div class="box">
 <h3>商品登録</h3>
- 	<p th:text="${msg}"></p>
- 	<form role="form" id="itemCreConf" th:action="@{/itemCreConf}" th:object="${formModel}" method="post">
+ 	<span th:text="${errormessage}" th:class="error"></span>
+ 	<form th:action="@{/itemCreConf}" th:object="${formModel}" method="post">
 	 	<table>
 	 		<tr>
 	 			<th>商品コード</th>
-	 			<td><input type="text" name="itemCode" th:value="*{itemCode}" th:errorclass="err" placeholder="1～8文字"/></td>
-	 			<td><div th:if="${#fields.hasErrors('itemCode')}" th:errors="*{itemCode}" th:errorclass="err"></div></td>
+	 			<td>
+	 				<input type="text" name="itemCode" th:value="*{itemCode}" th:errorclass="err" placeholder="1～8文字"/>
+	 			</td>
+	 			<td>
+	 				<div th:if="${#fields.hasErrors('itemCode')}" th:errors="*{itemCode}" th:errorclass="err"></div>
+	 			</td>
 	 		</tr>
 	 		<tr>
 	 			<th>商品名</th>
 	 			<td><input type="text" name="itemName" th:value="*{itemName}" th:errorclass="err" placeholder="必須入力"/></td>
-	 			<td><div th:if="${#fields.hasErrors('itemName')}" th:errors="*{itemName}" th:errorclass="err"></div></td>
+	 			<td>
+	 				<div th:if="${#fields.hasErrors('itemName')}" th:errors="*{itemName}" th:errorclass="err"></div>
+	 			</td>
 	 		</tr>
 	 		<tr>
 	 			<th>商品区分</th>

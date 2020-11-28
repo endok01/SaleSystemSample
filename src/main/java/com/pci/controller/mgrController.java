@@ -388,7 +388,7 @@ public class mgrController {
 	 * @param mv
 	 * @return ModelAndView
 	 */
-	@RequestMapping(value = "/ItemAdd", method = RequestMethod.POST)
+	@RequestMapping(value = "/itemCre", method = RequestMethod.POST)
 	@Transactional(readOnly = true)
 	public ModelAndView itemAdd(
 //			@ModelAttribute ItemForm itemForm,
