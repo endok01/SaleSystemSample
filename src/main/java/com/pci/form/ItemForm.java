@@ -16,27 +16,29 @@ import com.pci.entity.MtItemGenre;
  */
 public class ItemForm {
 
-	@Size(min=4, max=4)
+	@Size(min=8, max=8)
 	private String itemCode;	// 商品コード
 
 	@Size(min=1, max=20)
 	private String itemName;	// 商品名
 
 	@Min(1)
-	@Max(999999999)
+	@Max(9999999)
 	@NotNull
 	private Integer price;	// 単価
 
-	@Size(min=1,max=10)
+	@Size(max=10)
 	private String spec;		// 仕様
 
 	@NotNull
 	private MtItemGenre mtItemGenre;	// 商品区分
 	
+	/**
+	 * コンストラクタ
+	 */
 	public ItemForm() {
 		super();
 	}
-
 	public ItemForm(String itemCode, String itemName, Integer price, String spec, MtItemGenre mtItemGenre) {
 		super();
 		this.itemCode = itemCode;
@@ -90,7 +92,7 @@ public class ItemForm {
 	@Override
 	public String toString() {
 		return "ItemForm [itemCode=" + itemCode + ", itemName=" + itemName + ", price=" + price + ", spec=" + spec
-				+ ", mtItemGenre=" + mtItemGenre.getItemGenreName() + "]";
+				+ ", mtItemGenre=" + mtItemGenre.getItemGenreCode() + ":" + mtItemGenre.getItemGenreName() + "]";
 	}
 
 

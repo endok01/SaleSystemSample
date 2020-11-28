@@ -35,8 +35,21 @@ public class MtItem implements Serializable {
 	@OneToMany(mappedBy="mtItem")
 	private List<TrSalesDetail> trSalesDetails;
 
+	/**
+	 * コンストラクタ
+	 */
 	public MtItem() {
+		super();
 	}
+	public MtItem(String itemCode, String itemName, Integer price, String spec, MtItemGenre mtItemGenre) {
+		super();
+		this.itemCode = itemCode;
+		this.itemName = itemName;
+		this.price = price;
+		this.spec = spec;
+		this.mtItemGenre = mtItemGenre;
+	}
+
 
 	public String getItemCode() {
 		return this.itemCode;
