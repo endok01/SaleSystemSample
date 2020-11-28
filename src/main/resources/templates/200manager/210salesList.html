@@ -21,7 +21,11 @@
  			<td th:text="${sale.mtUser.userName}" class="c4"/>
   			<td th:text="${sale.saleDate}" class="c3"/>
   			<td th:text="${sale.mtCustomer.customerName}" class="c3"/>
-  			<td><form th:action="@{'/salesDetailDisp/'+${sale.salesId}}" method="get"><button type="submit" id="upd" class="">明細確認</button></form></td>
+  			<td>
+  				<form th:action="@{'/Mgr/salesDetailDisp/'+${sale.salesId}}" method="get">
+  					<button type="submit" class="">明細確認</button>
+  				</form>
+  			</td>
  		</tr>
  	</table>
 </div>
