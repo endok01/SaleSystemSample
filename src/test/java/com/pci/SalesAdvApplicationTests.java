@@ -5,7 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.pci.security.UserAccountService;
-
+/**
+ * テストクラス
+ * DBにユーザを登録する
+ * パスワードハッシュ化対応のため、テストクラスを利用する
+ * @author kzhk9
+ *
+ */
 @SpringBootTest
 class SalesAdvApplicationTests {
 
