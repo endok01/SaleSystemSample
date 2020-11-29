@@ -39,7 +39,7 @@ import com.pci.summary.ResultConverter;
 @Controller
 @RequestMapping(value = "/Mgr")		// このコントローラが処理するURL
 @SessionAttributes("loginUser")		// セッション情報の利用
-public class mgrController {
+public class MgrController {
 	
 	@Autowired
 	UserRepository userRepo;			// ユーザ情報
