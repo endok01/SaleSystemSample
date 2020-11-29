@@ -62,7 +62,7 @@ public class LoginController {
 			        	mav.setViewName("forward:/Mgr/SalesList");
 			            break;
 			        }else if (grantedAuthority.getAuthority().equals("ROLE_USER")) {
-			        	mav.setViewName("forward:/Usr/Top");	
+			        	mav.setViewName("forward:/Staff/SalesList");	
 			        	break;
 			        } else {	// 一致するロールがないときはログインエラーに遷移する
 			        	mav.setViewName("forward:/login-error");	

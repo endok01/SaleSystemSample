@@ -15,8 +15,6 @@ public class ResultConverter {
 	/**
 	 * 
 	 * 集計結果リストオブジェクトとして格納する
-	 * 
-	 * 
 	 * @param result
 	 * @return
 	 */

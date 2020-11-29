@@ -7,21 +7,25 @@
 <body>
 <div class="box">
 <h3>売上明細</h3>
- 	<p th:text="${msg}"></p>
- 		<table>
+ 	<span th:text="${errormessage}" th:class="error"></span>
+	<table>
  		<tr class="hd2">
- 		<th>顧客</th>
- 		<th>売上日</th>
-  		<th>変更</th>
+ 			<th>顧客</th>
+ 			<th>売上日</th>
+  			<th>変更</th>
  		</tr>
   		<tr class="row">		
  			<td th:text="${saleOutline.mtCustomer.customerName}" class="c3"/>
  			<td th:text="${saleOutline.saleDate}" class="c3"/>
- 			<td><form th:action="@{'/saleUpd/'+${saleOutline.salesId}}" method="get"><button type="submit" id="upd" class="">変更</button></form></td>	
+ 			<td>
+ 				<form th:action="@{'/Staff/saleUpd/'+${saleOutline.salesId}}" method="post">
+ 					<button type="submit" >変更</button>
+ 				</form>
+ 			</td>	
  		</tr>
- 		</table>
+	</table>
  	
- 	 	<table>
+ 	<table>
  		<tr class="hd2">
  			<th>No.</th>
  			<th>商品名</th>
@@ -29,7 +33,7 @@
  			<th>数量</th>
  			<th>単価</th>
  		</tr>
- 		<tr th:each="detail,cnt:${detailList}" class="row">
+ 		<tr th:each="detail,cnt:${saleOutline.trSalesDetails}" class="row">
  			<td th:text="${cnt.count}" class="c0"/>
  			<td th:text="${detail.mtItem.itemName}" class="c4"/>
  			<td th:text="${detail.mtItem.mtItemGenre.itemGenreName}" class="c4"/>
