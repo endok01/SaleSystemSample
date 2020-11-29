@@ -44,6 +44,8 @@ public class StaffController {
 	ItemRepository itemRepository;	// 商品情報
 	@Autowired
 	ItemGenreRepository itemGenreRepository;	// 商品区分
+	@Autowired
+	ResultConverter resultConverter;	// 集計情報変換
 	
 
 	/**
@@ -75,7 +77,7 @@ public class StaffController {
 	public ModelAndView salesSummaryByDate(
 			@ModelAttribute("loginUser") MtUser loginUser,	// セッション情報から取得
 			ModelAndView mav) {
-		mav.addObject("salesList", ResultConverter.salesSummaryResultConverterForDate(saleDetailRepository.findBySalesSummaryByDate(loginUser.getUserCode())));
+		mav.addObject("salesList", resultConverter.salesSummaryResultConverterForDate(saleDetailRepository.findBySalesSummaryByDate(loginUser.getUserCode())));
 		mav.setViewName("/300staff/316salesSummaryByDate");
 		
 		return mav;
@@ -92,7 +94,7 @@ public class StaffController {
 	public ModelAndView salesSummaryByItem(
 			@ModelAttribute("loginUser") MtUser loginUser,	// セッション情報から取得
 			ModelAndView mav) {
-		mav.addObject("salesList", ResultConverter.salesSummaryResultConverter(saleDetailRepository.findBySalesSummaryByItem(loginUser.getUserCode())));
+		mav.addObject("salesList", resultConverter.salesSummaryResultConverter(saleDetailRepository.findBySalesSummaryByItem(loginUser.getUserCode())));
 		mav.setViewName("/300staff/312salesSummaryByItem");
 
 		return mav;
@@ -109,7 +111,7 @@ public class StaffController {
 	public ModelAndView salesSummaryByCustomer(
 			@ModelAttribute("loginUser") MtUser loginUser,	// セッション情報から取得
 			ModelAndView mav) {
-		mav.addObject("salesList", ResultConverter.salesSummaryResultConverter(saleDetailRepository.findBySalesSummaryByCustomer(loginUser.getUserCode())));
+		mav.addObject("salesList", resultConverter.salesSummaryResultConverter(saleDetailRepository.findBySalesSummaryByCustomer(loginUser.getUserCode())));
 		mav.setViewName("/300staff/313salesSummaryByCustomer");
 
 		return mav;

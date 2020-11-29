@@ -53,7 +53,9 @@ public class MgrController {
 	ItemRepository itemRepository;	// 商品情報
 	@Autowired
 	ItemGenreRepository itemGenreRepository;	// 商品区分
-	
+	@Autowired
+	ResultConverter resultConverter;	// 集計情報変換
+
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	// 売上一覧
 	////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -100,7 +102,7 @@ public class MgrController {
 	 */
 	@RequestMapping(value = "/salesSummaryByDate",method=RequestMethod.POST)
 	public ModelAndView salesSummaryByDate(ModelAndView mav) {
-		mav.addObject("salesList", ResultConverter.salesSummaryResultConverterForDate(saleDetailRepository.findBySalesSummaryByDate()));
+		mav.addObject("salesList", resultConverter.salesSummaryResultConverterForDate(saleDetailRepository.findBySalesSummaryByDate()));
 		mav.setViewName("/200manager/216salesSummaryByDate");
 		
 		return mav;
@@ -113,7 +115,7 @@ public class MgrController {
 	 */
 	@RequestMapping(value = "/salesSummaryByItem",method=RequestMethod.POST)
 	public ModelAndView salesSummaryByItem(ModelAndView mav) {
-		mav.addObject("salesList", ResultConverter.salesSummaryResultConverter(saleDetailRepository.findBySalesSummaryByItem()));
+		mav.addObject("salesList", resultConverter.salesSummaryResultConverter(saleDetailRepository.findBySalesSummaryByItem()));
 		mav.setViewName("/200manager/212salesSummaryByItem");
 		return mav;
 	}
@@ -125,7 +127,7 @@ public class MgrController {
 	 */
 	@RequestMapping(value = "/salesSummaryByCustomer",method=RequestMethod.POST)
 	public ModelAndView salesSummaryByCustomer(ModelAndView mav) {
-		mav.addObject("salesList", ResultConverter.salesSummaryResultConverter(saleDetailRepository.findBySalesSummaryByCustomer()));
+		mav.addObject("salesList", resultConverter.salesSummaryResultConverter(saleDetailRepository.findBySalesSummaryByCustomer()));
 		mav.setViewName("/200manager/213salesSummaryByCustomer");
 		return mav;
 	}
@@ -137,7 +139,7 @@ public class MgrController {
 	 */
 	@RequestMapping(value = "/salesSummaryByItemGenre",method=RequestMethod.POST)
 	public ModelAndView salesSummaryByItemGenre(ModelAndView mav) {
-		mav.addObject("salesList", ResultConverter.salesSummaryResultConverter(saleDetailRepository.findBySalesSummaryByItemGenre()));
+		mav.addObject("salesList", resultConverter.salesSummaryResultConverter(saleDetailRepository.findBySalesSummaryByItemGenre()));
 		mav.setViewName("/200manager/214salesSummaryByItemGenre");
 		return mav;
 	}
@@ -149,7 +151,7 @@ public class MgrController {
 	 */
 	@RequestMapping(value = "/salesSummaryByStaff",method=RequestMethod.POST)
 	public ModelAndView salesSummaryByStaff(ModelAndView mav) {
-		mav.addObject("salesList", ResultConverter.salesSummaryResultConverter(saleDetailRepository.findBySalesSummaryByStaff()));
+		mav.addObject("salesList", resultConverter.salesSummaryResultConverter(saleDetailRepository.findBySalesSummaryByStaff()));
 		mav.setViewName("/200manager/215salesSummaryByStaff");
 		return mav;
 	}
