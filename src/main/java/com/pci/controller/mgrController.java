@@ -23,8 +23,10 @@ import com.pci.form.ItemForm;
 import com.pci.repository.CustomerRepository;
 import com.pci.repository.ItemGenreRepository;
 import com.pci.repository.ItemRepository;
+import com.pci.repository.SalesDetailRepository;
 import com.pci.repository.SalesOutlineRepository;
 import com.pci.repository.UserRepository;
+import com.pci.summary.ResultConverter;
 
 
 /**
@@ -44,6 +46,8 @@ public class mgrController {
 	@Autowired							
 	SalesOutlineRepository saleRepository;	// 売上概要
 	@Autowired
+	SalesDetailRepository saleDetailRepository;	// 売上明細
+	@Autowired
 	CustomerRepository customerRepository;	// 顧客情報
 	@Autowired
 	ItemRepository itemRepository;	// 商品情報
@@ -62,15 +66,92 @@ public class mgrController {
 	 */
 	@RequestMapping(value = "/SalesList", method = RequestMethod.GET)
 	@Transactional(readOnly = true)
-	public ModelAndView top(ModelAndView mav) {
+	public ModelAndView top(ModelAndView mv) {
 
     	// 売上一覧の取得
-		mav.addObject("salesList", saleRepository.findAll());
+		mv.addObject("salesList", saleRepository.findAll());
 		
-    	mav.setViewName("200manager/210salesList");
+    	mv.setViewName("200manager/210salesList");
 
-    	return mav;
+    	return mv;
 
+	}
+
+	/**
+	 * 売上明細表示
+	 * @param salesId	売上ID
+	 * @param mv
+	 * @return
+	 */
+	@RequestMapping(value="/salesDetailDisp/{salesId}",method=RequestMethod.POST)
+	public ModelAndView salesDetailDisp(
+			@PathVariable Long salesId,
+			ModelAndView mv) {
+		mv.addObject("saleOutline", saleRepository.getOne(salesId));
+		mv.setViewName("/200manager/211salesDetailList");
+		
+		return mv;
+	}
+	
+	/**
+	 * 売上集計(日付別)
+	 * @param mav
+	 * @return
+	 */
+	@RequestMapping(value = "/salesSummaryByDate",method=RequestMethod.POST)
+	public ModelAndView salesSummaryByDate(ModelAndView mav) {
+		mav.addObject("salesList", ResultConverter.salesSummaryResultConverterForDate(saleDetailRepository.findBySalesSummaryByDate()));
+		mav.setViewName("/200manager/216salesSummaryByDate");
+		
+		return mav;
+	}
+	
+	/**
+	 * 売上集計(商品別)
+	 * @param mav
+	 * @return
+	 */
+	@RequestMapping(value = "/salesSummaryByItem",method=RequestMethod.POST)
+	public ModelAndView salesSummaryByItem(ModelAndView mav) {
+		mav.addObject("salesList", ResultConverter.salesSummaryResultConverter(saleDetailRepository.findBySalesSummaryByItem()));
+		mav.setViewName("/200manager/212salesSummaryByItem");
+		return mav;
+	}
+
+	/**
+	 * 売上集計(顧客別)
+	 * @param mav
+	 * @return
+	 */
+	@RequestMapping(value = "/salesSummaryByCustomer",method=RequestMethod.POST)
+	public ModelAndView salesSummaryByCustomer(ModelAndView mav) {
+		mav.addObject("salesList", ResultConverter.salesSummaryResultConverter(saleDetailRepository.findBySalesSummaryByCustomer()));
+		mav.setViewName("/200manager/213salesSummaryByCustomer");
+		return mav;
+	}
+	
+	/**
+	 * 売上集計(商品区分別)
+	 * @param mav
+	 * @return
+	 */
+	@RequestMapping(value = "/salesSummaryByItemGenre",method=RequestMethod.POST)
+	public ModelAndView salesSummaryByItemGenre(ModelAndView mav) {
+		mav.addObject("salesList", ResultConverter.salesSummaryResultConverter(saleDetailRepository.findBySalesSummaryByItemGenre()));
+		mav.setViewName("/200manager/214salesSummaryByItemGenre");
+		return mav;
+	}
+
+	/**
+	 * 売上集計(課員別)
+	 * @param mav
+	 * @return
+	 */
+	@RequestMapping(value = "/salesSummaryByStaff",method=RequestMethod.POST)
+	public ModelAndView salesSummaryByStaff(ModelAndView mav) {
+		mav.addObject("salesList", ResultConverter.salesSummaryResultConverter(saleDetailRepository.findBySalesSummaryByStaff()));
+		mav.setViewName("/200manager/215salesSummaryByStaff");
+		return mav;
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////////

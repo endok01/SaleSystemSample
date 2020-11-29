@@ -149,3 +149,15 @@ table {							/* テーブル自体の中央寄せ */
 .left	{/* 左揃え */
     text-align: left;			/* 左揃え */
 }
+/* *****************************
+ 横に並べる
+*********************************/
+.flex{
+    display: flex;
+    padding: 10px;
+    justify-content: center;
+}
+.flex div{
+    margin: 5px;
+    padding: 5px;
+}
