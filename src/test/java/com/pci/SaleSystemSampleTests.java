@@ -13,7 +13,7 @@ import com.pci.security.UserAccountService;
  *
  */
 @SpringBootTest
-class SalesAdvApplicationTests {
+class SaleSystemSampleTests {
 
 	@Autowired
 	private UserAccountService sv;

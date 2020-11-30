@@ -139,6 +139,48 @@ public class StaffController {
 		
 		return mav;
 	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// 売上明細処理
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	@RequestMapping(value = "/saleCre",method = RequestMethod.POST)
+	public ModelAndView SaleCre(ModelAndView mav) {
+		TrSalesOutline sale = new TrSalesOutline();
+		mav.addObject("formModel", sale);
+		mav.addObject("itemList", itemRepository.findAll());
+		mav.addObject("customerList", customerRepository.findAll());
+		mav.setViewName("/300staff/321salesCre");
+		return mav;
+	}
 	
+//	@RequestMapping(value = "/saleCreConf",method=RequestMethod.GET)
+//	public ModelAndView SaleCreConf(
+//			@ModelAttribute("formModel")TrSalesOutline sale,
+//			BindingResult result,
+//			ModelAndView mav) {
+//		user=userRepository.findByUserCode(userDetail.getUsername()).get();
+//		mav.addObject("userName", user.getUserName());
+//		if(!result.hasErrors()) {
+//			String[] itemCodeArray = sale.getItemCodeArray();
+//			String[] quantityArray = sale.getQuantityArray();
+//			if(itemCodeArray!=null) {
+//				for(int i=0;i<itemCodeArray.length;i++) {
+//					int qty=Integer.parseInt(quantityArray[i]);
+//					if(qty!=0) {
+//						MtItem item = itemRepository.findByItemCode(itemCodeArray[i]).get();
+//						salesDetails.add(new TrSalesDetail(qty,item.getPrice(),item));
+//					}
+//				}
+//			}
+//			mav.addObject("salesDetails", salesDetails);
+//			mav.setViewName("/300staff/322salesCreConf");
+//		}else {
+//			mav.addObject("msg", "エラーが発生しました");
+//			mav.addObject("itemList", itemRepository.findAll());
+//			mav.addObject("customerList", customerRepository.findAll());
+//			mav.setViewName("/300staff/321salesCre");
+//		}
+//		return mav;
+//	}
 
 }

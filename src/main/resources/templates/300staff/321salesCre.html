@@ -36,7 +36,7 @@
 	 			<td th:inline="text"><input type="hidden" name="itemCodeArray" th:value="${item.itemCode}"/>[[${item.itemName}]]</td>
 	 			<td th:text="${item.spec}"/>
 	 			<td th:text="${item.price}"/>
-	 			<td>			
+	 			<td>
 	 				<select id="quantityArray" name="quantityArray" size="1" th:field="*{quantityArray}">
 	 					<option th:value="0">数量を選択してください</option>
 	 					<option th:each="q:${#numbers.sequence(1,99)}" th:value="${q}" th:inline="text">[[${q}]]</option>
