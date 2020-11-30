@@ -1,9 +1,13 @@
 package com.pci.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,8 +15,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.pci.entity.MtItem;
 import com.pci.entity.MtUser;
 import com.pci.entity.TrSalesOutline;
+import com.pci.form.SalesForm;
+import com.pci.form.SalesItemForm;
 import com.pci.repository.CustomerRepository;
 import com.pci.repository.ItemGenreRepository;
 import com.pci.repository.ItemRepository;
@@ -143,44 +150,78 @@ public class StaffController {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// 売上明細処理
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * 売上登録処理
+	 * 売上概要および売上明細登録画面の表示を行う
+	 * @param loginUser
+	 * @param mav
+	 * @return
+	 */
 	@RequestMapping(value = "/saleCre",method = RequestMethod.POST)
-	public ModelAndView SaleCre(ModelAndView mav) {
-		TrSalesOutline sale = new TrSalesOutline();
-		mav.addObject("formModel", sale);
-		mav.addObject("itemList", itemRepository.findAll());
-		mav.addObject("customerList", customerRepository.findAll());
+	public ModelAndView SaleCre(
+			@ModelAttribute("loginUser") MtUser loginUser,	// セッション情報から取得
+			ModelAndView mav) {
+		// 売上情報の設定
+		SalesForm salesForm = new SalesForm();
+		salesForm.setMtUser(loginUser);
+		// 商品一覧の作成
+		List<SalesItemForm> salesItemForm = new ArrayList<>();
+		List<MtItem> itemList =  itemRepository.findAllByOrderByItemCode();
+		for(MtItem i : itemList) {
+			SalesItemForm itemForm = new SalesItemForm(
+												null, 
+												i.getItemCode(), 
+												i.getItemName(), 
+												i.getPrice(), 
+												i.getSpec(), 
+												i.getMtItemGenre(), 
+												null);
+			salesItemForm.add(itemForm);
+		}
+		salesForm.setSaleItemForm(salesItemForm);
+		mav.addObject("salesForm", salesForm);
+		mav.addObject("customerList", customerRepository.findAllByOrderByCustomerCode());
 		mav.setViewName("/300staff/321salesCre");
 		return mav;
 	}
 	
-//	@RequestMapping(value = "/saleCreConf",method=RequestMethod.GET)
-//	public ModelAndView SaleCreConf(
-//			@ModelAttribute("formModel")TrSalesOutline sale,
-//			BindingResult result,
-//			ModelAndView mav) {
-//		user=userRepository.findByUserCode(userDetail.getUsername()).get();
-//		mav.addObject("userName", user.getUserName());
-//		if(!result.hasErrors()) {
-//			String[] itemCodeArray = sale.getItemCodeArray();
-//			String[] quantityArray = sale.getQuantityArray();
-//			if(itemCodeArray!=null) {
-//				for(int i=0;i<itemCodeArray.length;i++) {
-//					int qty=Integer.parseInt(quantityArray[i]);
-//					if(qty!=0) {
-//						MtItem item = itemRepository.findByItemCode(itemCodeArray[i]).get();
-//						salesDetails.add(new TrSalesDetail(qty,item.getPrice(),item));
-//					}
-//				}
-//			}
-//			mav.addObject("salesDetails", salesDetails);
-//			mav.setViewName("/300staff/322salesCreConf");
-//		}else {
-//			mav.addObject("msg", "エラーが発生しました");
-//			mav.addObject("itemList", itemRepository.findAll());
-//			mav.addObject("customerList", customerRepository.findAll());
-//			mav.setViewName("/300staff/321salesCre");
-//		}
-//		return mav;
-//	}
+	/**
+	 * 
+	 * 登録確認
+	 * @param salesForm
+	 * @param result
+	 * @param mav
+	 * @return
+	 */
+	@RequestMapping(value="/saleCreConf", method=RequestMethod.POST)
+	public ModelAndView SaleCreConf(
+			@ModelAttribute @Validated SalesForm salesForm,
+			BindingResult result,
+			ModelAndView mav) {
+		if(result.hasErrors()) {
+			mav.addObject("errormessage", "エラーが発生しました");
+			// 商品一覧の作成
+			List<SalesItemForm> salesItemForm = new ArrayList<>();
+			List<MtItem> itemList =  itemRepository.findAllByOrderByItemCode();
+			int index = 0;
+			for(MtItem i : itemList) {
+				SalesItemForm itemForm = new SalesItemForm(
+													null, 
+													i.getItemCode(), 
+													i.getItemName(), 
+													i.getPrice(), 
+													i.getSpec(), 
+													i.getMtItemGenre(), 
+													null);
+				salesItemForm.add(itemForm);
+				++index;
+			}
+			salesForm.setSaleItemForm(salesItemForm);
+			mav.addObject("customerList", customerRepository.findAllByOrderByCustomerCode());
+			mav.setViewName("/300staff/321salesCre");
+		}else {
+		}
+		return mav;
+	}
 
 }
