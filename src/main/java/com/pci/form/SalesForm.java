@@ -16,19 +16,21 @@ import com.pci.entity.MtUser;
  *
  */
 public class SalesForm {
-
+	// 非表示
 	private long salesId;	// 売上ID
-	private MtUser mtUser;	// 担当者情報
+
 	// Input
+	private MtUser mtUser;	// 担当者情報
+
 	private MtCustomer mtCustomer;	// 顧客情報
+	
 	@NotBlank
 	private String salesDateString;		// 日付
+	
 	@NotNull
 	@Valid
-	private List<SalesItemForm> saleItemForm;	// 売上明細入力フォーム
+	private List<SalesItemForm> salesItemForm;	// 売上明細入力フォーム
 	
-//	private Date saleDate;
-
 	/**
 	 * コンストラクタ
 	 */
@@ -72,11 +74,11 @@ public class SalesForm {
 	}
 
 	public List<SalesItemForm> getSaleItemForm() {
-		return saleItemForm;
+		return salesItemForm;
 	}
 
 	public void setSaleItemForm(List<SalesItemForm> saleItemForm) {
-		this.saleItemForm = saleItemForm;
+		this.salesItemForm = saleItemForm;
 	}
 	
 }

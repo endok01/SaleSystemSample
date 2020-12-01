@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.pci.entity.MtCustomer;
 import com.pci.entity.MtItem;
 import com.pci.entity.MtUser;
+import com.pci.entity.TrSalesDetail;
 import com.pci.entity.TrSalesOutline;
 import com.pci.form.SalesForm;
 import com.pci.form.SalesItemForm;
@@ -53,6 +56,7 @@ public class StaffController {
 	ItemGenreRepository itemGenreRepository;	// 商品区分
 	@Autowired
 	ResultConverter resultConverter;	// 集計情報変換
+	
 	
 
 	/**
@@ -160,9 +164,8 @@ public class StaffController {
 	@RequestMapping(value = "/saleCre",method = RequestMethod.POST)
 	public ModelAndView SaleCre(
 			@ModelAttribute("loginUser") MtUser loginUser,	// セッション情報から取得
+			@ModelAttribute SalesForm salesForm,
 			ModelAndView mav) {
-		// 売上情報の設定
-		SalesForm salesForm = new SalesForm();
 		salesForm.setMtUser(loginUser);
 		// 商品一覧の作成
 		List<SalesItemForm> salesItemForm = new ArrayList<>();
@@ -174,8 +177,7 @@ public class StaffController {
 												i.getItemName(), 
 												i.getPrice(), 
 												i.getSpec(), 
-												i.getMtItemGenre(), 
-												null);
+												0);
 			salesItemForm.add(itemForm);
 		}
 		salesForm.setSaleItemForm(salesItemForm);
@@ -188,6 +190,7 @@ public class StaffController {
 	/**
 	 * 
 	 * 登録確認
+	 * 入力内容確認用画面
 	 * @param salesForm
 	 * @param result
 	 * @param mav
@@ -199,28 +202,55 @@ public class StaffController {
 			BindingResult result,
 			ModelAndView mav) {
 		if(result.hasErrors()) {
-			mav.addObject("errormessage", "エラーが発生しました");
-			// 商品一覧の作成
-			List<SalesItemForm> salesItemForm = new ArrayList<>();
-			List<MtItem> itemList =  itemRepository.findAllByOrderByItemCode();
-			int index = 0;
-			for(MtItem i : itemList) {
-				SalesItemForm itemForm = new SalesItemForm(
-													null, 
-													i.getItemCode(), 
-													i.getItemName(), 
-													i.getPrice(), 
-													i.getSpec(), 
-													i.getMtItemGenre(), 
-													null);
-				salesItemForm.add(itemForm);
-				++index;
-			}
-			salesForm.setSaleItemForm(salesItemForm);
+//			mav.addObject("errormessage", "エラーが発生しました");
 			mav.addObject("customerList", customerRepository.findAllByOrderByCustomerCode());
 			mav.setViewName("/300staff/321salesCre");
 		}else {
+			MtCustomer c = customerRepository.getOne(salesForm.getMtCustomer().getCustomerCode());
+			salesForm.setMtCustomer(c);
+			mav.setViewName("/300staff/322salesCreConf");
 		}
+		return mav;
+	}
+
+	/**
+	 * 
+	 * @param salesForm
+	 * @param mav
+	 * @return
+	 */
+	@RequestMapping(value="/saleRegExe", method=RequestMethod.POST)
+	@Transactional(readOnly = false)
+	public ModelAndView SaleRegExe(
+			@ModelAttribute("loginUser") MtUser loginUser,	// セッション情報から取得
+			@ModelAttribute SalesForm salesForm,
+			ModelAndView mav){
+
+		TrSalesOutline sale = new TrSalesOutline();	// エンティティ生成
+
+		sale.setSaleDate(java.sql.Date.valueOf(salesForm.getSalesDateString()));	// 日付設定
+
+		MtCustomer customer = new MtCustomer();
+		customer.setCustomerCode(salesForm.getMtCustomer().getCustomerCode());
+		sale.setMtCustomer(customer);
+
+		sale.setMtUser(loginUser);	// ユーザ情報設定
+
+		saleRepository.saveAndFlush(sale);	// 売上概要登録
+		
+		// 売上明細作成
+		List<TrSalesDetail> salesDetail = new ArrayList<>();
+		sale.setTrSalesDetails(salesDetail);
+		for(SalesItemForm i : salesForm.getSaleItemForm()) {
+			MtItem m = new MtItem();
+			m.setItemCode(i.getItemCode());
+			TrSalesDetail d = new TrSalesDetail(null, i.getQuantity(), i.getPrice(), m);
+			d.setTrSalesOutline(sale);
+			salesDetail.add(d);
+		}
+		saleDetailRepository.saveAll(salesDetail);	// 売上明細登録
+
+		mav.setViewName("redirect:/Staff/SalesList?");	
 		return mav;
 	}
 

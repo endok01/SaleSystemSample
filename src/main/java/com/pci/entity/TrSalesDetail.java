@@ -15,10 +15,10 @@ public class TrSalesDetail implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TR_SALES_DETAIL_DETAILID_GENERATOR", sequenceName="TR_SALES_DETAIL_DETAIL_ID")
+	@SequenceGenerator(name="TR_SALES_DETAIL_DETAILID_GENERATOR", sequenceName="TR_SALES_DETAIL_DETAIL_ID_SEQ",allocationSize = 1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TR_SALES_DETAIL_DETAILID_GENERATOR")
 	@Column(name="DETAIL_ID")
-	private long detailId;
+	private Long detailId;
 
 	private Integer quantity;
 
@@ -38,11 +38,19 @@ public class TrSalesDetail implements Serializable {
 	public TrSalesDetail() {
 	}
 
-	public long getDetailId() {
+	public TrSalesDetail(Long detailId, Integer quantity, Integer salesPrice, MtItem mtItem) {
+		super();
+		this.detailId = detailId;
+		this.quantity = quantity;
+		this.salesPrice = salesPrice;
+		this.mtItem = mtItem;
+	}
+
+	public Long getDetailId() {
 		return this.detailId;
 	}
 
-	public void setDetailId(long detailId) {
+	public void setDetailId(Long detailId) {
 		this.detailId = detailId;
 	}
 

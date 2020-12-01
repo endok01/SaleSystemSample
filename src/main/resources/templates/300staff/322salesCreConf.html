@@ -8,26 +8,39 @@
 <div class="box">
 <h3>売上登録確認</h3>
  	<p th:text="${msg}"></p>
- 	<form role="form" id="saleRegExe" th:action="@{/saleRegExe}" th:object="${formModel}" method="post">
- 	<input type="hidden" name="formModel" th:value="${formModel}"/>
+ 	<form th:action="@{/Staff/saleRegExe}" th:object="${salesForm}" method="post">
  	 	<table>
 	 		<tr>
 	 			<th>顧客</th>
 	 			<td class="left" th:text="*{mtCustomer.customerName}"/>
+	 			<td>
+	 			<input type="hidden" th:field="*{mtCustomer.customerCode}" name="customerCode"/>
+	 			</td>
 	 		</tr>
 	 		<tr>
 	 			<th>売上日</th>
 	 			<td class="left" th:text="*{salesDateString}"/>
+	 			<td>
+	 			<input type="hidden" th:field="*{salesDateString}" name="salesDateString"/>
+	 			</td>
 	 		</tr>
 	 		</table>
 	 		<table>
 	 		<tr class="hd2">
 	 			<th>商品</th>
+	 			<th>単価</th>
 	 			<th>数量</th>
 	 		</tr>
-	 		<tr th:each="detail:${salesDetails}" class="row">		
-	 			<td class="left" th:text="${detail.mtItem.itemName}"/>
-	 			<td class="left" th:text="${detail.quantity}"/>
+	 		<tr th:each="s, status : *{saleItemForm}" class="row">		
+	 			<td class="left" th:text="${s.itemName}"/>
+	 			<td class="left" th:text="${s.price}"/>
+	 			<td class="left" th:text="${s.quantity}"/>
+	 			<td>
+	 				<input type="hidden" th:field="*{saleItemForm[__${status.index}__].itemCode}" name="itemCode" />
+	 				<input type="hidden" th:field="*{saleItemForm[__${status.index}__].price}" name="price" />
+	 				<input type="hidden" th:field="*{saleItemForm[__${status.index}__].quantity}" name="quantity" />
+	 			
+	 			</td>
 	 		</tr>
 
 	 	</table>

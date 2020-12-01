@@ -16,8 +16,9 @@ import java.util.List;
 public class TrSalesOutline implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	
 	@Id
-	@SequenceGenerator(name="TR_SALES_OUTLINE_SALESID_GENERATOR", sequenceName="TR_SALES_OUTLINE_SALES_ID")
+	@SequenceGenerator(name="TR_SALES_OUTLINE_SALESID_GENERATOR", sequenceName="TR_SALES_OUTLINE_SALES_ID_SEQ",allocationSize = 1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TR_SALES_OUTLINE_SALESID_GENERATOR")
 	@Column(name="SALES_ID")
 	private long salesId;
