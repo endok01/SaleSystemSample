@@ -201,13 +201,13 @@ public class StaffController {
 			@ModelAttribute @Validated SalesForm salesForm,
 			BindingResult result,
 			ModelAndView mav) {
-		// 売上が１件も登録されていない場合はエラーにする
 		int total = 0;
 		for(SalesItemForm i : salesForm.getSalesItemForm()) {
 			total += i.getQuantity();
 		}
-		if(total == 0) {
-			mav.addObject("errormessage", "売上が登録されていません");
+		
+		if(total == 0) {	// 売上が１件も登録されていない場合はエラーにする
+			mav.addObject("errormessage", "売上件数が0です");
 			mav.addObject("customerList", customerRepository.findAllByOrderByCustomerCode());
 			mav.setViewName("/300staff/321salesCre");
 		} else {
@@ -240,6 +240,7 @@ public class StaffController {
 
 		sale.setSaleDate(java.sql.Date.valueOf(salesForm.getSalesDateString()));	// 日付設定
 
+		// 顧客情報設定
 		MtCustomer customer = new MtCustomer();
 		customer.setCustomerCode(salesForm.getMtCustomer().getCustomerCode());
 		sale.setMtCustomer(customer);
@@ -251,19 +252,148 @@ public class StaffController {
 		// 売上明細作成
 		List<TrSalesDetail> salesDetail = new ArrayList<>();
 		sale.setTrSalesDetails(salesDetail);
-		// 個数0排除する☆
 		for(SalesItemForm i : salesForm.getSalesItemForm()) {
-			MtItem m = new MtItem();
-			m.setItemCode(i.getItemCode());
-			TrSalesDetail d = new TrSalesDetail(null, i.getQuantity(), i.getPrice(), m);
-			d.setTrSalesOutline(sale);
-			salesDetail.add(d);
+			if(i.getQuantity() != 0) {	// 数量が0のものは登録しない
+				MtItem m = new MtItem();
+				m.setItemCode(i.getItemCode());
+				TrSalesDetail d = new TrSalesDetail(null, i.getQuantity(), i.getPrice(), m);
+				d.setTrSalesOutline(sale);
+				salesDetail.add(d);
+			}
 		}
 		
 		saleDetailRepository.saveAll(salesDetail);	// 売上明細登録
 
-		mav.setViewName("redirect:/Staff/SalesList?");	
+		mav.setViewName("redirect:/Staff/SalesList?");	// 売上一覧の表示
 		return mav;
 	}
 
+	/**
+	 * 売上更新処理
+	 * 売上概要および売上明細登録画面の表示を行う
+	 * @param loginUser
+	 * @param mav
+	 * @return
+	 */
+	@RequestMapping(value = "/saleUpd/{salesId}",method = RequestMethod.POST)
+	public ModelAndView SaleUpd(
+			@ModelAttribute("loginUser") MtUser loginUser,	// セッション情報から取得
+			@ModelAttribute SalesForm salesForm,
+			@PathVariable Long salesId,
+			ModelAndView mav) {
+		salesForm.setMtUser(loginUser);
+
+		// 対象の売上情報を取得する
+		Optional<TrSalesOutline> s = saleRepository.findById(salesId);
+		TrSalesOutline outline = s.get();
+		
+		// 売上情報からフォームオブジェクトを作成する
+		// 親レコードの要素設定
+		salesForm.setSalesId(outline.getSalesId());
+		salesForm.setMtUser(loginUser);
+		salesForm.setMtCustomer(outline.getMtCustomer());
+		salesForm.setSalesDateString(outline.getSaleDate().toString());
+		
+		// 商品一覧の作成
+		List<SalesItemForm> salesItemForm = new ArrayList<>();
+		List<MtItem> itemList =  itemRepository.findAllByOrderByItemCode();
+		for(MtItem i : itemList) {
+			SalesItemForm itemForm = new SalesItemForm(
+												null, 
+												i.getItemCode(), 
+												i.getItemName(), 
+												i.getPrice(), 
+												i.getSpec(), 
+												0);
+			salesItemForm.add(itemForm);
+		}
+		
+		// 子レコードの要素設定
+		// 一致する商品コードのものにIDと数量を設定する
+		for(TrSalesDetail detail : outline.getTrSalesDetails()) {
+			for(SalesItemForm itemForm : salesItemForm) {
+				if(itemForm.getItemCode().equals(detail.getMtItem().getItemCode())) {
+					itemForm.setDetailId(detail.getDetailId());
+					itemForm.setPrice(detail.getSalesPrice());	// 登録時の単価を引き継ぐ
+					itemForm.setQuantity(detail.getQuantity());
+					break;
+				}
+			}
+		}
+		
+		salesForm.setSalesItemForm(salesItemForm);
+		mav.addObject("salesForm", salesForm);
+		mav.addObject("customerList", customerRepository.findAllByOrderByCustomerCode());
+		mav.setViewName("/300staff/331salesUpd");
+		return mav;
+	}
+	/**
+	 * 
+	 * 更新確認
+	 * 入力内容確認用画面
+	 * @param salesForm
+	 * @param result
+	 * @param mav
+	 * @return
+	 */
+	@RequestMapping(value="/saleUpdConf", method=RequestMethod.POST)
+	public ModelAndView SaleUpdConf(
+			@ModelAttribute @Validated SalesForm salesForm,
+			BindingResult result,
+			ModelAndView mav) {
+		int total = 0;
+		for(SalesItemForm i : salesForm.getSalesItemForm()) {
+			total += i.getQuantity();
+		}
+		
+		if(total == 0) {	// 売上が１件も登録されていない場合はエラーにする
+			mav.addObject("errormessage", "売上件数が0です");
+			mav.addObject("customerList", customerRepository.findAllByOrderByCustomerCode());
+			mav.setViewName("/300staff/331salesUpd");
+		} else {
+			if(result.hasErrors()) {
+				mav.addObject("customerList", customerRepository.findAllByOrderByCustomerCode());
+				mav.setViewName("/300staff/331salesUpd");
+			}else {
+				MtCustomer c = customerRepository.getOne(salesForm.getMtCustomer().getCustomerCode());
+				salesForm.setMtCustomer(c);
+				mav.setViewName("/300staff/332salesUpdConf");
+			}
+		}
+		return mav;
+	}
+
+	/**
+	 * 売上更新実行
+	 * @param salesForm
+	 * @param mav
+	 * @return
+	 */
+	@RequestMapping(value="/saleUpdExe", method=RequestMethod.POST)
+	@Transactional(readOnly = false)
+	public ModelAndView SaleUpdExe(
+			@ModelAttribute("loginUser") MtUser loginUser,	// セッション情報から取得
+			@ModelAttribute SalesForm salesForm,
+			ModelAndView mav){
+
+		// 現情報の取得
+		
+		TrSalesOutline sale = new TrSalesOutline();	// エンティティ生成
+
+		// 概要更新(日付情報の更新)
+		sale.setSaleDate(java.sql.Date.valueOf(salesForm.getSalesDateString()));	// 日付設定
+
+		// 顧客情報設定
+		// saleRepository.saveAndFlush(sale);	// 売上概要登録
+		
+		// 売上明細処理
+		// DetailIDがNullでなく、数量が0の処理 ⇒ レコード削除
+		// 上記以外はsaveAndFlushでいけるはず
+		
+		// saleDetailRepository.saveAll(salesDetail);	// 売上明細登録
+
+		mav.setViewName("redirect:/Staff/SalesList?");	// 売上一覧の表示
+		return mav;
+	}
+	
 }

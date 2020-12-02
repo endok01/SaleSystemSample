@@ -2,10 +2,7 @@ package com.pci.form;
 
 import java.util.List;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
 import com.pci.entity.MtCustomer;
 import com.pci.entity.MtUser;
 
@@ -27,8 +24,8 @@ public class SalesForm {
 	@NotBlank
 	private String salesDateString;		// 日付
 	
-	@NotNull
-	@Valid
+//	@NotNull
+//	@Valid
 	private List<SalesItemForm> salesItemForm;	// 売上明細入力フォーム
 	
 	/**

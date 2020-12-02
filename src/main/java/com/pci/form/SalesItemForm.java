@@ -1,8 +1,5 @@
 package com.pci.form;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-
 /**
  * 売上明細情報用フォームクラス
  * @author endo_k01
@@ -18,7 +15,6 @@ public class SalesItemForm {
 	private String spec;		// 仕様
 
 	// Input
-	@Max(99)
 	private Integer quantity;	// 数量
 
 	/**
@@ -77,5 +73,5 @@ public class SalesItemForm {
 	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
 	}
-
+	
 }
