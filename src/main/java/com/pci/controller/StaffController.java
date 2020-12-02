@@ -180,7 +180,7 @@ public class StaffController {
 												0);
 			salesItemForm.add(itemForm);
 		}
-		salesForm.setSaleItemForm(salesItemForm);
+		salesForm.setSalesItemForm(salesItemForm);
 		mav.addObject("salesForm", salesForm);
 		mav.addObject("customerList", customerRepository.findAllByOrderByCustomerCode());
 		mav.setViewName("/300staff/321salesCre");
@@ -201,20 +201,30 @@ public class StaffController {
 			@ModelAttribute @Validated SalesForm salesForm,
 			BindingResult result,
 			ModelAndView mav) {
-		if(result.hasErrors()) {
-//			mav.addObject("errormessage", "エラーが発生しました");
+		// 売上が１件も登録されていない場合はエラーにする
+		int total = 0;
+		for(SalesItemForm i : salesForm.getSalesItemForm()) {
+			total += i.getQuantity();
+		}
+		if(total == 0) {
+			mav.addObject("errormessage", "売上が登録されていません");
 			mav.addObject("customerList", customerRepository.findAllByOrderByCustomerCode());
 			mav.setViewName("/300staff/321salesCre");
-		}else {
-			MtCustomer c = customerRepository.getOne(salesForm.getMtCustomer().getCustomerCode());
-			salesForm.setMtCustomer(c);
-			mav.setViewName("/300staff/322salesCreConf");
+		} else {
+			if(result.hasErrors()) {
+				mav.addObject("customerList", customerRepository.findAllByOrderByCustomerCode());
+				mav.setViewName("/300staff/321salesCre");
+			}else {
+				MtCustomer c = customerRepository.getOne(salesForm.getMtCustomer().getCustomerCode());
+				salesForm.setMtCustomer(c);
+				mav.setViewName("/300staff/322salesCreConf");
+			}
 		}
 		return mav;
 	}
 
 	/**
-	 * 
+	 * 売上登録実行
 	 * @param salesForm
 	 * @param mav
 	 * @return
@@ -241,13 +251,15 @@ public class StaffController {
 		// 売上明細作成
 		List<TrSalesDetail> salesDetail = new ArrayList<>();
 		sale.setTrSalesDetails(salesDetail);
-		for(SalesItemForm i : salesForm.getSaleItemForm()) {
+		// 個数0排除する☆
+		for(SalesItemForm i : salesForm.getSalesItemForm()) {
 			MtItem m = new MtItem();
 			m.setItemCode(i.getItemCode());
 			TrSalesDetail d = new TrSalesDetail(null, i.getQuantity(), i.getPrice(), m);
 			d.setTrSalesOutline(sale);
 			salesDetail.add(d);
 		}
+		
 		saleDetailRepository.saveAll(salesDetail);	// 売上明細登録
 
 		mav.setViewName("redirect:/Staff/SalesList?");	

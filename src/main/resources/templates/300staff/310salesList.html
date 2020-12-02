@@ -11,22 +11,28 @@
  		<button type="submit" class="menuBtn">売上新規登録</button>
  	</form>
 	<div class="flex">
- 		<form th:action="@{/Staff/salesSummaryByItem}" method="post">
- 			<button type="submit">商品別売上</button>
- 		</form>
- 		<form th:action="@{/Staff/salesSummaryByCustomer}" method="post">
- 			<button type="submit">顧客別売上</button>
- 		</form>
-	 	<form th:action="@{/Staff/salesSummaryByDate}" method="post">
- 			<button type="submit">日付別売上</button>
- 		</form>
+		<div>
+ 			<form th:action="@{/Staff/salesSummaryByItem}" method="post">
+ 				<button type="submit">商品別売上</button>
+ 			</form>
+		</div>
+		<div>
+ 			<form th:action="@{/Staff/salesSummaryByCustomer}" method="post">
+ 				<button type="submit">顧客別売上</button>
+	 		</form>
+		</div>
+		<div>
+		 	<form th:action="@{/Staff/salesSummaryByDate}" method="post">
+ 				<button type="submit">日付別売上</button>
+	 		</form>
+		</div>
  	</div>
  	<table>
  		<tr class="hd2">
  			<th>No.</th>
  			<th>売上日</th>
  			<th>顧客</th>
- 			<th>売上明細</th>
+ 			<th>売上明細確認</th>
  		</tr>
  		<tr th:each="sale, cnt : ${salesList}" class="row">
  			<td th:text="${cnt.count}" class="c0"/>
@@ -34,7 +40,7 @@
   			<td th:text="${sale.mtCustomer.customerName}" class="c3"/>
   			<td>
   				<form th:action="@{'/Staff/salesDetailDisp/'+${sale.salesId}}" method="post">
-  					<button type="submit">確認</button>
+  					<button type="submit">明細確認</button>
   				</form>
   			</td>
  		</tr>

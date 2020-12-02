@@ -31,15 +31,13 @@
 	 			<th>単価</th>
 	 			<th>数量</th>
 	 		</tr>
-	 		<tr th:each="s, status : *{saleItemForm}" class="row">		
+	 		<tr th:each="s, status : *{salesItemForm}" class="row">		
 	 			<td class="left" th:text="${s.itemName}"/>
 	 			<td class="left" th:text="${s.price}"/>
-	 			<td class="left" th:text="${s.quantity}"/>
-	 			<td>
-	 				<input type="hidden" th:field="*{saleItemForm[__${status.index}__].itemCode}" name="itemCode" />
-	 				<input type="hidden" th:field="*{saleItemForm[__${status.index}__].price}" name="price" />
-	 				<input type="hidden" th:field="*{saleItemForm[__${status.index}__].quantity}" name="quantity" />
-	 			
+	 			<td class="left" th:text="${s.quantity}">
+	 				<input type="hidden" th:field="*{salesItemForm[__${status.index}__].itemCode}" name="itemCode" />
+	 				<input type="hidden" th:field="*{salesItemForm[__${status.index}__].price}" name="price" />
+	 				<input type="hidden" th:field="*{salesItemForm[__${status.index}__].quantity}" name="quantity" />
 	 			</td>
 	 		</tr>
 

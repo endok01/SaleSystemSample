@@ -18,7 +18,6 @@ public class SalesItemForm {
 	private String spec;		// 仕様
 
 	// Input
-	@Min(0)
 	@Max(99)
 	private Integer quantity;	// 数量
 

@@ -73,12 +73,13 @@ public class SalesForm {
 		this.salesDateString = salesDateString;
 	}
 
-	public List<SalesItemForm> getSaleItemForm() {
+	public List<SalesItemForm> getSalesItemForm() {
 		return salesItemForm;
 	}
 
-	public void setSaleItemForm(List<SalesItemForm> saleItemForm) {
-		this.salesItemForm = saleItemForm;
+	public void setSalesItemForm(List<SalesItemForm> salesItemForm) {
+		this.salesItemForm = salesItemForm;
 	}
-	
+
+
 }

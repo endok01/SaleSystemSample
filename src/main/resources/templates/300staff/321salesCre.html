@@ -34,23 +34,18 @@
 	 			<th>単価</th>
 	 			<th>数量</th>
 	 		</tr>
-	 		<tr th:each="s, status : *{saleItemForm}" class="row">
-	 			<td th:text="${s.itemName}"></td>
+	 		<tr th:each="s, status : *{salesItemForm}" class="row">
+	 			<td th:text="${s.itemName}">
+	 			</td>
 	 			<td th:text="${s.spec}"></td>
 	 			<td th:text="${s.price}"></td>
-	 			<!--/* 
-	 				ネストしたBeanへの参照は添字を使用する
-					↓参考
-					https://macchinetta.github.io/server-guideline-thymeleaf/current/ja/ArchitectureInDetail/WebApplicationDetail/Validation.html
-	 		 	*/-->
-	 			<td><input type="number" th:field="*{saleItemForm[__${status.index}__].quantity}" name="quantity"></td>
-	 			<td><span th:errors="*{saleItemForm[__${status.index}__].quantity}" th:errorclass="error"></span></td>
 	 			<td>
-	 				<input type="hidden" th:field="*{saleItemForm[__${status.index}__].detailId}" name="detailId" />
-	 				<input type="hidden" th:field="*{saleItemForm[__${status.index}__].itemCode}" name="itemCode" />
-	 				<input type="hidden" th:field="*{saleItemForm[__${status.index}__].itemName}" name="itemName" />
-	 				<input type="hidden" th:field="*{saleItemForm[__${status.index}__].price}" name="price" />
-	 				<input type="hidden" th:field="*{saleItemForm[__${status.index}__].spec}" name="spec" />
+	 				<input type="number" min="0" max="99" th:field="*{salesItemForm[__${status.index}__].quantity}" name="quantity">
+	 				<input type="hidden" th:field="*{salesItemForm[__${status.index}__].detailId}" name="detailId" />
+	 				<input type="hidden" th:field="*{salesItemForm[__${status.index}__].itemCode}" name="itemCode" />
+	 				<input type="hidden" th:field="*{salesItemForm[__${status.index}__].itemName}" name="itemName" />
+	 				<input type="hidden" th:field="*{salesItemForm[__${status.index}__].price}" name="price" />
+	 				<input type="hidden" th:field="*{salesItemForm[__${status.index}__].spec}" name="spec" />
 	 			</td>
 	 		</tr>
 		</table>
