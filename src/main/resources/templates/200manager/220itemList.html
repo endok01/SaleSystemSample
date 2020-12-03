@@ -27,7 +27,7 @@
   			<td th:text="${item.itemName}" class="c3"/>
   			<td th:text="${item.mtItemGenre.itemGenreName}" class="c3"/>
   			<td th:text="${item.spec}" class="c3"/>
-  			<td th:text="${item.price}" class="c3"/>
+  			<td th:text="${#numbers.formatInteger(item.price, 1, 'COMMA')}" class="c0"/>
   			<td>
   				<form th:action="@{'/Mgr/itemUpd/'+${item.itemCode}}" method="post">
   					<button type="submit">変更</button>

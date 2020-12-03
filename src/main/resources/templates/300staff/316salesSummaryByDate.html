@@ -17,7 +17,7 @@
  		<tr th:each="sale,cnt:${salesList}" class="row">
  			<td th:text="${cnt.count}" class="c0"/>
  			<td th:text="${sale.date}" class="c4"/>
-  			<td th:text="${sale.total}" class="c3"/>
+  			<td th:text="${#numbers.formatInteger(sale.total, 1, 'COMMA')}" class="c0"/>
  		</tr>
  	</table>
 </div>

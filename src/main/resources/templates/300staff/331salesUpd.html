@@ -36,7 +36,7 @@
 	 			<td th:text="${s.itemName}">
 	 			</td>
 	 			<td th:text="${s.spec}"></td>
-	 			<td th:text="${s.price}"></td>
+	 			<td th:text="${#numbers.formatInteger(s.price, 1, 'COMMA')}" class="c0"></td>
 	 			<td>
 	 				<input type="number" min="0" max="99" th:field="*{salesItemForm[__${status.index}__].quantity}" name="quantity">
 	 				<input type="hidden" th:field="*{salesItemForm[__${status.index}__].detailId}" name="detailId" />

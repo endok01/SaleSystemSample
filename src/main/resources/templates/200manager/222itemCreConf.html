@@ -34,7 +34,7 @@
 	 		</tr>
 	 		<tr>
 	 			<th>単価</th>
-	 			<td class="left" th:text="*{price}"/>
+	 			<td class="left" th:text="*{#numbers.formatInteger(price, 1, 'COMMA')}"/>
 	 		</tr>
 	 	</table>
 	 	<button type="submit" class="menuBtn">登録する</button>

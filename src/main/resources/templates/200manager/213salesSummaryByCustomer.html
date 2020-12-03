@@ -19,7 +19,7 @@
  			<td th:text="${cnt.count}" class="c0"/>
  			<td th:text="${sale.code}" class="c4"/>
   			<td th:text="${sale.name}" class="c3"/>
-  			<td th:text="${sale.total}" class="c3"/>
+  			<td th:text="${#numbers.formatInteger(sale.total, 1, 'COMMA')}" class="c0"/>
  		</tr>
  	</table>
 </div>

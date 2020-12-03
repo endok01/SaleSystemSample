@@ -32,13 +32,15 @@
  			<th>商品区分</th>
  			<th>単価</th>
  			<th>数量</th>
+ 			<th>売上額</th>
  		</tr>
  		<tr th:each="detail,cnt:${saleOutline.trSalesDetails}" class="row">
  			<td th:text="${cnt.count}" class="c0"/>
  			<td th:text="${detail.mtItem.itemName}" class="c4"/>
  			<td th:text="${detail.mtItem.mtItemGenre.itemGenreName}" class="c4"/>
-  			<td th:text="${detail.salesPrice}" class="c3"/>
-  			<td th:text="${detail.quantity}" class="c3"/>
+  			<td th:text="${#numbers.formatInteger(detail.salesPrice, 1, 'COMMA')}" class="c0"/>
+  			<td th:text="${detail.quantity}" class="c0"/>
+  			<td th:text="${#numbers.formatInteger(detail.salesPrice * detail.quantity, 1, 'COMMA')}" class="c0"/>
  		</tr>
  	</table>
 </div>

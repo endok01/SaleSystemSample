@@ -33,8 +33,8 @@
 	 		</tr>
 	 		<tr th:each="s, status : ${salesForm.salesItemForm}" class="row">		
 	 			<td class="left" th:text="${s.itemName}"/>
-	 			<td class="left" th:text="${s.price}"/>
-	 			<td class="left" th:text="${s.quantity}"/>
+	 			<td class="left" th:text="${#numbers.formatInteger(s.price, 1, 'COMMA')}"/>
+	 			<td class="left" th:text="${#numbers.formatInteger(s.quantity, 1, 'COMMA')}"/>
 	 			<td>
 	 				<input type="hidden" th:field="*{salesItemForm[__${status.index}__].detailId}" name="detailId" />
 	 				<input type="hidden" th:field="*{salesItemForm[__${status.index}__].itemCode}" name="itemCode" />
