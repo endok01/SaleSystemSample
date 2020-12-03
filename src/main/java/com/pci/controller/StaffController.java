@@ -201,6 +201,8 @@ public class StaffController {
 			@ModelAttribute @Validated SalesForm salesForm,
 			BindingResult result,
 			ModelAndView mav) {
+		
+		// 売上件数の算出
 		int total = 0;
 		for(SalesItemForm i : salesForm.getSalesItemForm()) {
 			total += i.getQuantity();
@@ -211,7 +213,7 @@ public class StaffController {
 			mav.addObject("customerList", customerRepository.findAllByOrderByCustomerCode());
 			mav.setViewName("/300staff/321salesCre");
 		} else {
-			if(result.hasErrors()) {
+			if(result.hasErrors()) {	// Validationチェック
 				mav.addObject("customerList", customerRepository.findAllByOrderByCustomerCode());
 				mav.setViewName("/300staff/321salesCre");
 			}else {
@@ -265,21 +267,24 @@ public class StaffController {
 		saleDetailRepository.saveAll(salesDetail);	// 売上明細登録
 
 		mav.setViewName("redirect:/Staff/SalesList?");	// 売上一覧の表示
+
 		return mav;
 	}
 
 	/**
 	 * 売上更新処理
 	 * 売上概要および売上明細登録画面の表示を行う
-	 * @param loginUser
-	 * @param mav
+	 * @param loginUser	ログインユーザ情報
+	 * @param salesForm　入力フォーム
+	 * @param salesId	売上ID
+	 * @param mav	ModelAndView
 	 * @return
 	 */
-	@RequestMapping(value = "/saleUpd/{salesId}",method = RequestMethod.POST)
+	@RequestMapping(value = "/saleUpd/{salesId}", method = RequestMethod.POST)
 	public ModelAndView SaleUpd(
 			@ModelAttribute("loginUser") MtUser loginUser,	// セッション情報から取得
 			@ModelAttribute SalesForm salesForm,
-			@PathVariable Long salesId,
+			@PathVariable Long salesId,	
 			ModelAndView mav) {
 		salesForm.setMtUser(loginUser);
 
@@ -331,7 +336,7 @@ public class StaffController {
 	 * 
 	 * 更新確認
 	 * 入力内容確認用画面
-	 * @param salesForm
+	 * @param salesForm 入力フォーム
 	 * @param result
 	 * @param mav
 	 * @return
@@ -341,6 +346,8 @@ public class StaffController {
 			@ModelAttribute @Validated SalesForm salesForm,
 			BindingResult result,
 			ModelAndView mav) {
+		
+		// 売上件数の算出
 		int total = 0;
 		for(SalesItemForm i : salesForm.getSalesItemForm()) {
 			total += i.getQuantity();
@@ -365,7 +372,7 @@ public class StaffController {
 
 	/**
 	 * 売上更新実行
-	 * @param salesForm
+	 * @param salesForm 入力フォーム
 	 * @param mav
 	 * @return
 	 */
@@ -377,22 +384,33 @@ public class StaffController {
 			ModelAndView mav){
 
 		// 現情報の取得
+		Optional<TrSalesOutline> o = saleRepository.findById(salesForm.getSalesId());
+		TrSalesOutline sale = o.get();
 		
-		TrSalesOutline sale = new TrSalesOutline();	// エンティティ生成
-
-		// 概要更新(日付情報の更新)
+		// 日付情報の更新
 		sale.setSaleDate(java.sql.Date.valueOf(salesForm.getSalesDateString()));	// 日付設定
-
-		// 顧客情報設定
-		// saleRepository.saveAndFlush(sale);	// 売上概要登録
+		
+		saleRepository.saveAndFlush(sale);	// 売上概要登録
 		
 		// 売上明細処理
-		// DetailIDがNullでなく、数量が0の処理 ⇒ レコード削除
-		// 上記以外はsaveAndFlushでいけるはず
-		
-		// saleDetailRepository.saveAll(salesDetail);	// 売上明細登録
+		saleDetailRepository.deleteAll(sale.getTrSalesDetails());	// 子レコードを全削除
+
+		// 新たに売上明細を登録
+		List<TrSalesDetail> salesDetail = new ArrayList<>();
+		sale.setTrSalesDetails(salesDetail);
+		for(SalesItemForm i : salesForm.getSalesItemForm()) {
+			if(i.getQuantity() != 0) {	// 数量が0のものは登録しない
+				MtItem m = new MtItem();
+				m.setItemCode(i.getItemCode());
+				TrSalesDetail d = new TrSalesDetail(null, i.getQuantity(), i.getPrice(), m);
+				d.setTrSalesOutline(sale);
+				salesDetail.add(d);
+			}
+		}
+		saleDetailRepository.saveAll(salesDetail);	// 売上明細登録
 
 		mav.setViewName("redirect:/Staff/SalesList?");	// 売上一覧の表示
+
 		return mav;
 	}
 	

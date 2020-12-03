@@ -9,23 +9,23 @@
 <h3>売上変更確認</h3>
  	<span th:text="${errormessage}" th:class="error"></span>
  	<form th:action="@{/Staff/saleUpdExe}" th:object="${salesForm}" method="post">
+<!--/* サーバへ送信するデータの設定 */-->
+		<input type="hidden" th:field="*{salesId}" name="salesId"/>
+		<input type="hidden" th:field="*{mtCustomer.customerCode}" name="customerCode"/>
+		<input type="hidden" th:field="*{salesDateString}" name="salesDateString"/>
+
  	 	<table>
 	 		<tr>
 	 			<th>顧客</th>
 	 			<td class="left" th:text="*{mtCustomer.customerName}"/>
-	 			<td>
-	 			<input type="hidden" th:field="*{mtCustomer.customerCode}" name="customerCode"/>
-	 			</td>
 	 		</tr>
 	 		<tr>
 	 			<th>売上日</th>
 	 			<td class="left" th:text="*{salesDateString}"/>
-	 			<td>
-	 			<input type="hidden" th:field="*{salesDateString}" name="salesDateString"/>
-	 			</td>
 	 		</tr>
-	 		</table>
-	 		<table>
+ 		</table>
+
+ 		<table>
 	 		<tr class="hd2">
 	 			<th>商品</th>
 	 			<th>単価</th>
@@ -36,6 +36,7 @@
 	 			<td class="left" th:text="${s.price}"/>
 	 			<td class="left" th:text="${s.quantity}"/>
 	 			<td>
+	 				<input type="hidden" th:field="*{salesItemForm[__${status.index}__].detailId}" name="detailId" />
 	 				<input type="hidden" th:field="*{salesItemForm[__${status.index}__].itemCode}" name="itemCode" />
 	 				<input type="hidden" th:field="*{salesItemForm[__${status.index}__].price}" name="price" />
 	 				<input type="hidden" th:field="*{salesItemForm[__${status.index}__].quantity}" name="quantity" />

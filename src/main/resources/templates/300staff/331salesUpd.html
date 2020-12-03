@@ -9,14 +9,15 @@
 <h3>売上変更</h3>
  	<span th:text="${errormessage}" th:class="error"></span>
  	<form th:action="@{/Staff/saleUpdConf}" th:object="${salesForm}" method="post">
- 	 		<table>
+<!--/* サーバへ送信するデータの設定  */-->
+		<input type="hidden" th:field="*{salesId}" name="salesId"/>
+		<input type="hidden" th:field="*{mtCustomer.customerCode}" name="customerCode"/>
+		<input type="hidden" th:field="*{mtCustomer.customerName}" name="customerName"/>
+
+ 		<table>
  			<tr>
 	 			<th>顧客</th>
 	 			<td th:text="*{mtCustomer.customerName}"></td>
-	 			<td>
-	 				<input type="hidden" th:field="*{mtCustomer.customerCode}" name="customerCode"/>
-	 				<input type="hidden" th:field="*{mtCustomer.customerName}" name="customerName"/>
-	 			</td>
 	 		</tr>
 	 		<tr>
 	 			<th>売上日</th>
