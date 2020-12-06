@@ -33,7 +33,7 @@
 	 		</tr>
 	 		<tr>
 	 			<th>仕様</th>
-	 			<td><input type="text" name="spec" th:value="*{spec}"/></td>
+	 			<td><input type="text" name="spec" th:value="*{spec}"  placeholder="10文字以内"/></td>
 				<td><span th:errors="*{spec}" th:class="error"></span></td>
 	 		</tr>
 	 		<tr>
@@ -42,7 +42,7 @@
 				<td><span th:errors="*{price}" th:class="error"></span></td>
 	 		</tr>
 	 	</table>
-	 	<button type="submit" class="menuBtn">登録確認へ</button>
+	 	<button type="submit" class="menuBtn">登録確認</button>
  	</form>
 </div>
 </body>

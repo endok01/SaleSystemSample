@@ -30,12 +30,14 @@
 	 			<th>商品</th>
 	 			<th>単価</th>
 	 			<th>数量</th>
+	 			<th>売上額</th>
 	 		</tr>
 	 		<tr th:each="s, status : ${salesForm.salesItemForm}" class="row">		
 	 			<td class="left" th:text="${s.itemName}"/>
-	 			<td class="left" th:text="${#numbers.formatInteger(s.price, 1, 'COMMA')}"/>
-	 			<td class="left" th:text="${#numbers.formatInteger(s.quantity, 1, 'COMMA')}"/>
-	 			<td>
+	 			<td class="c0" th:text="${#numbers.formatInteger(s.price, 1, 'COMMA')}"/>
+	 			<td class="c0" th:text="${#numbers.formatInteger(s.quantity, 1, 'COMMA')}"/>
+	 			<td class="c0">
+	 				<span th:text="${#numbers.formatInteger(s.price*s.quantity, 1, 'COMMA')}"></span>
 	 				<input type="hidden" th:field="*{salesItemForm[__${status.index}__].detailId}" name="detailId" />
 	 				<input type="hidden" th:field="*{salesItemForm[__${status.index}__].itemCode}" name="itemCode" />
 	 				<input type="hidden" th:field="*{salesItemForm[__${status.index}__].price}" name="price" />
@@ -44,7 +46,7 @@
 	 		</tr>
 
 	 	</table>
- 		<button type="submit" class="menuBtn">変更する</button>
+ 		<button type="submit" class="menuBtn">変更</button>
  	</form>
 </div>
 </body>
