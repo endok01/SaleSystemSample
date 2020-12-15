@@ -21,12 +21,12 @@
 			<button type="submit" class="menuBtn">商品区分一覧</button>
 		</form>
 		
-				
 		<!--/* ユーザメニュー  */-->
 		<form th:action="@{/Staff/SalesList}" method="get" sec:authorize="hasRole('USER')">
 			<button type="submit" class="menuBtn">売上一覧</button>
 		</form>
 
+		<!--/* 共通メニュー  */-->
 		<form th:action="@{/logout}" method="post">
 			<button type="submit" class="menuBtn">ログアウト</button>
 		</form>

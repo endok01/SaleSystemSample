@@ -5,7 +5,7 @@
 <head>
 </head>
 <body>
-<div class="box">
+<div class="box" id="content">
 <h3>商品登録</h3>
  	<span th:text="${errormessage}" th:class="error"></span>
  	<form th:action="@{/Mgr/itemCreConf}" th:object="${itemForm}" method="post">

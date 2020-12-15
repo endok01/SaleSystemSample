@@ -5,7 +5,7 @@
 <head>
 </head>
 <body>
-<div class="box">
+<div class="box" id="content">
 <h3>顧客変更確認</h3>
  	<span th:text="${errormessage}" th:class="error"></span>
  	<form th:action="@{/Mgr/customerRegExe}" th:object="${customerForm}" method="post">
