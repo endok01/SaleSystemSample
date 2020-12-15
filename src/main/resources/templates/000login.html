@@ -10,8 +10,8 @@
 	<div th:include="commons/header :: frag_header"></div>
 	<div class="box">
 	<h2>ログイン認証</h2>
-	<form role="form" id="login" th:action="@{/login}" method="post">
-		<div th:if="${iserror}" style="color:red;">ログインできませんでした。やり直してください。</div>
+	<form id="login" th:action="@{/login}" method="post">
+		<div th:if="${iserror}" th:class="error">ログインできませんでした。やり直してください。</div>
 		<table>
 			<tr>
 				<th>ユーザID</th>

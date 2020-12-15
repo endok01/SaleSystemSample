@@ -8,27 +8,26 @@
 		<span th:text="${loginUser.userName}+さん">ログインユーザ名</span>
 
 		<!--/* マネージャメニュー  */-->
-		<form role="form" id="logout" th:action="@{/Mgr/SalesList}" method="get" sec:authorize="hasRole('MANAGER')">
+		<form th:action="@{/Mgr/SalesList}" method="get" sec:authorize="hasRole('MANAGER')">
 			<button type="submit" class="menuBtn">売上一覧</button>
 		</form>
-		<form role="form" id="logout" th:action="@{/Mgr/CustomerList}" method="get" sec:authorize="hasRole('MANAGER')">
+		<form th:action="@{/Mgr/CustomerList}" method="get" sec:authorize="hasRole('MANAGER')">
 			<button type="submit" class="menuBtn">顧客一覧</button>
 		</form>
-		<form role="form" id="logout" th:action="@{/Mgr/ItemList}" method="get" sec:authorize="hasRole('MANAGER')">
+		<form th:action="@{/Mgr/ItemList}" method="get" sec:authorize="hasRole('MANAGER')">
 			<button type="submit" class="menuBtn">商品一覧</button>
 		</form>
-		<form role="form" id="logout" th:action="@{/Mgr/ItemGenreList}" method="get" sec:authorize="hasRole('MANAGER')">
+		<form th:action="@{/Mgr/ItemGenreList}" method="get" sec:authorize="hasRole('MANAGER')">
 			<button type="submit" class="menuBtn">商品区分一覧</button>
 		</form>
 		
 				
 		<!--/* ユーザメニュー  */-->
-		<form role="form" id="logout" th:action="@{/Staff/SalesList}" method="get" sec:authorize="hasRole('USER')">
+		<form th:action="@{/Staff/SalesList}" method="get" sec:authorize="hasRole('USER')">
 			<button type="submit" class="menuBtn">売上一覧</button>
 		</form>
 
-		<br>
-		<form role="form" id="logout" th:action="@{/logout}" method="post">
+		<form th:action="@{/logout}" method="post">
 			<button type="submit" class="menuBtn">ログアウト</button>
 		</form>
 	</div>
