@@ -9,7 +9,7 @@
 <h3>顧客一覧</h3>
  	<span th:text="${errormessage}" th:class="error"></span>
  	<form th:action="@{/Mgr/customerCre}" method="post">
- 		<button type="submit" class="">顧客新規登録</button>
+ 		<button type="submit">顧客新規登録</button>
  	</form>
  	<table>
  		<tr class="hd2">
@@ -24,7 +24,7 @@
   			<td th:text="${customer.customerName}" class="c3"/>
   			<td>
   				<form th:action="@{'/Mgr/customerUpd/'+${customer.customerCode}}" method="post">
-  					<button type="submit" id="upd" class="">変更</button>
+  					<button type="submit">変更</button>
   				</form>
   			</td>
  		</tr>

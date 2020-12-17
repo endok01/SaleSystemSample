@@ -8,7 +8,9 @@
 <div class="box" id="content">
 <h3>商品区分一覧</h3>
  	<span th:text="${errormessage}" th:class="error"></span>
- 	<form th:action="@{/Mgr/itemGenreCre}" method="post"><button type="submit">商品区分新規登録</button></form>
+ 	<form th:action="@{/Mgr/itemGenreCre}" method="post">
+ 		<button type="submit">商品区分新規登録</button>
+ 	</form>
  	<table>
  		<tr class="hd2">
  			<th>No.</th>
