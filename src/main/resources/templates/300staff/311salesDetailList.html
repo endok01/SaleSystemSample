@@ -18,7 +18,7 @@
  			<td th:text="${saleOutline.mtCustomer.customerName}" class="c3"/>
  			<td th:text="${saleOutline.saleDate}" class="c3"/>
  			<td>
- 				<form th:action="@{'/Staff/saleUpd/'+${saleOutline.salesId}}" method="post">
+ 				<form th:action="@{'/Staff/salesUpd/'+${saleOutline.salesId}}" method="post">
  					<button type="submit" >変更</button>
  				</form>
  			</td>	

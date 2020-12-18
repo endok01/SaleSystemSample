@@ -136,7 +136,7 @@ public class StaffController {
 	 * @param mav
 	 * @return
 	 */
-	@RequestMapping(value="/salesDetailDisp/{salesId}",method=RequestMethod.POST)
+	@RequestMapping(value="/salesDetailList/{salesId}",method=RequestMethod.POST)
 	public ModelAndView salesDetailDisp(
 			@ModelAttribute("loginUser") MtUser loginUser,	// セッション情報から取得
 			@PathVariable Long salesId,
@@ -196,7 +196,7 @@ public class StaffController {
 	 * @param mav
 	 * @return
 	 */
-	@RequestMapping(value="/saleCreConf", method=RequestMethod.POST)
+	@RequestMapping(value="/salesCreConf", method=RequestMethod.POST)
 	public ModelAndView SaleCreConf(
 			@ModelAttribute @Validated SalesForm salesForm,
 			BindingResult result,
@@ -231,7 +231,7 @@ public class StaffController {
 	 * @param mav
 	 * @return
 	 */
-	@RequestMapping(value="/saleRegExe", method=RequestMethod.POST)
+	@RequestMapping(value="/salesRegExe", method=RequestMethod.POST)
 	@Transactional(readOnly = false)
 	public ModelAndView SaleRegExe(
 			@ModelAttribute("loginUser") MtUser loginUser,	// セッション情報から取得
@@ -280,7 +280,7 @@ public class StaffController {
 	 * @param mav	ModelAndView
 	 * @return
 	 */
-	@RequestMapping(value = "/saleUpd/{salesId}", method = RequestMethod.POST)
+	@RequestMapping(value = "/salesUpd/{salesId}", method = RequestMethod.POST)
 	public ModelAndView SaleUpd(
 			@ModelAttribute("loginUser") MtUser loginUser,	// セッション情報から取得
 			@ModelAttribute SalesForm salesForm,
@@ -341,7 +341,7 @@ public class StaffController {
 	 * @param mav
 	 * @return
 	 */
-	@RequestMapping(value="/saleUpdConf", method=RequestMethod.POST)
+	@RequestMapping(value="/salesUpdConf", method=RequestMethod.POST)
 	public ModelAndView SaleUpdConf(
 			@ModelAttribute @Validated SalesForm salesForm,
 			BindingResult result,
@@ -376,7 +376,7 @@ public class StaffController {
 	 * @param mav
 	 * @return
 	 */
-	@RequestMapping(value="/saleUpdExe", method=RequestMethod.POST)
+	@RequestMapping(value="/salesUpdExe", method=RequestMethod.POST)
 	@Transactional(readOnly = false)
 	public ModelAndView SaleUpdExe(
 			@ModelAttribute("loginUser") MtUser loginUser,	// セッション情報から取得

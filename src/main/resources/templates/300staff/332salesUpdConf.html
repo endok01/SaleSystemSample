@@ -8,7 +8,7 @@
 <div class="box" id="content">
 <h3>売上変更確認</h3>
  	<span th:text="${errormessage}" th:class="error"></span>
- 	<form th:action="@{/Staff/saleUpdExe}" th:object="${salesForm}" method="post">
+ 	<form th:action="@{/Staff/salesUpdExe}" th:object="${salesForm}" method="post">
 <!--/* サーバへ送信するデータの設定 */-->
 		<input type="hidden" th:field="*{salesId}" name="salesId"/>
 		<input type="hidden" th:field="*{mtCustomer.customerCode}" name="customerCode"/>

@@ -39,7 +39,7 @@
   			<td th:text="${sale.saleDate}" class="c3"/>
   			<td th:text="${sale.mtCustomer.customerName}" class="c3"/>
   			<td>
-  				<form th:action="@{'/Staff/salesDetailDisp/'+${sale.salesId}}" method="post">
+  				<form th:action="@{'/Staff/salesDetailList/'+${sale.salesId}}" method="post">
   					<button type="submit">明細確認</button>
   				</form>
   			</td>

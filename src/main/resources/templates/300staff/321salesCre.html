@@ -8,7 +8,7 @@
 <div class="box" id="content">
 <h3>売上登録</h3>
  	<span th:text="${errormessage}" th:class="error"></span>
-  	<form th:action="@{/Staff/saleCreConf}" th:object="${salesForm}" method="post">
+  	<form th:action="@{/Staff/salesCreConf}" th:object="${salesForm}" method="post">
  		<table>
  			<tr>
 	 			<th>顧客</th>
@@ -23,7 +23,7 @@
 	 		<tr>
 	 			<th>売上日</th>
 	 			<td><input type="date" name="salesDateString" th:field="*{salesDateString}" placeholder="必須入力"/></td>
-	 			<td><span th:errors="*{salesDateString}" th:errorclass="error"></span></td>
+	 			<td><span th:errors="*{salesDateString}" th:class="error"></span></td>
 	 		</tr>
  		</table>
  		<br>
