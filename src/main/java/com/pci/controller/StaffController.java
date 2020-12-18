@@ -161,7 +161,7 @@ public class StaffController {
 	 * @param mav
 	 * @return
 	 */
-	@RequestMapping(value = "/saleCre",method = RequestMethod.POST)
+	@RequestMapping(value = "/salesCre",method = RequestMethod.POST)
 	public ModelAndView SaleCre(
 			@ModelAttribute("loginUser") MtUser loginUser,	// セッション情報から取得
 			@ModelAttribute SalesForm salesForm,
