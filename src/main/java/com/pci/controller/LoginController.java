@@ -35,7 +35,7 @@ public class LoginController {
 	 * @param mv ModelAndView
 	 * @return ModelAndView
 	 */
-	@RequestMapping(value = "/login",method=RequestMethod.GET)
+	@RequestMapping(value = {"/"},method=RequestMethod.GET)
 	public ModelAndView login(ModelAndView mav) {
 		mav.addObject("iserror", false);
 		mav.setViewName("000login");
